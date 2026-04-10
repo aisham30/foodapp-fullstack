@@ -21,8 +21,7 @@ function ContactPage() {
       return;
     }
 
-    try {
-      await axios.post("https://your-render-backend.onrender.com/api/contacts", form);
+    try {await axios.post("https://foodapp-fullstack.onrender.com/api/contacts", form);
       alert("Contact saved to database ✅");
 
       setForm({ name: "", email: "", phone: "" });
