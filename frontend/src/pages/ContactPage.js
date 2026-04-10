@@ -22,7 +22,7 @@ function ContactPage() {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/contacts", form);
+      await axios.post("https://your-render-backend.onrender.com/api/contacts", form);
       alert("Contact saved to database ✅");
 
       setForm({ name: "", email: "", phone: "" });
