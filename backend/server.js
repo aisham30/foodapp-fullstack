@@ -7,9 +7,9 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect("mongodb+srv://aisha:aisha@cluster0.cqpbz1v.mongodb.net/contactDB?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://aisha:mendonsa@cluster0.cqpbz1v.mongodb.net/contactDB?retryWrites=true&w=majority")
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch(err => console.log("DB ERROR:", err));
 
 // Schema
 const Contact = mongoose.model("Contact", {
