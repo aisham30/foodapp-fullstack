@@ -18,6 +18,15 @@ const Contact = mongoose.model("Contact", {
     phone: String
 });
 
+const Order = mongoose.model("Order", {
+  items: Array,
+  totalAmount: Number,
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
 // Routes
 app.post("/api/contacts", async (req, res) => {
     try {
@@ -46,7 +55,31 @@ app.delete("/api/contacts/:id", async (req, res) => {
     res.json({ message: "Deleted" });
 });
 
+app.post("/api/orders", async (req, res) => {
+  try {
+    const { items, totalAmount } = req.body;
+
+    if (!items || items.length === 0) {
+      return res.status(400).json({ error: "Cart is empty" });
+    }
+
+    const newOrder = new Order({ items, totalAmount });
+    await newOrder.save();
+
+    res.status(201).json(newOrder);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+app.get("/api/orders", async (req, res) => {
+  const data = await Order.find();
+  res.json(data);
+});
+
 // Start server
-app.listen(5000, () => {
-    console.log("Server running on port 5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
