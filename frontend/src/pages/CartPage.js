@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function CartPage({ cartItems, removeFromCart }) {
     const [promoCode, setPromoCode] = useState("");
@@ -21,11 +22,6 @@ function CartPage({ cartItems, removeFromCart }) {
         }
     }
 
-    function placeOrder() {
-        if (cartItems.length === 0) return;
-        setOrderPlaced(true);
-    }
-
     if (orderPlaced) {
         return (
             <div className="cart-page">
@@ -43,6 +39,26 @@ function CartPage({ cartItems, removeFromCart }) {
             </div>
         );
     }
+
+    const placeOrder = async () => {
+  if (cartItems.length === 0) return;
+
+  try {
+    const totalAmount = cartItems.reduce((sum, item) => sum + item.price, 0);
+
+    await axios.post("https://foodapp-fullstack.onrender.com/api/orders", {
+      items: cartItems,
+      totalAmount
+    });
+
+    setOrderPlaced(true); // IMPORTANT
+    alert("Order placed successfully 🎉");
+    cartItems.length = 0;
+
+  } catch (err) {
+    alert("Error placing order ❌");
+  }
+};
 
     return (
         <div className="cart-page">
